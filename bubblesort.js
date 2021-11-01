@@ -8,7 +8,7 @@ for (var i = 0; i < 10; i++) {
 var sorted = true;
 
 var bubble_idx = 0;
-var bubble_sorted = true;
+var bubble_limit = 9;
 var compares = 0;
 
 function shuffleValues() {
@@ -51,34 +51,40 @@ function renderCompare(a,b) {
 }
 
 function bubble() {
-  if (bubble_idx >= 9) {
+  if (bubble_idx >= bubble_limit) {
     bubble_idx = 0;
-    sorted = bubble_sorted;
-    bubble_sorted = true;
+    bubble_limit--;
   }
-  if (!sorted) {
+  if (bubble_limit > 0) {
     if (values[bubble_idx] > values[bubble_idx+1]) {
       tmp = values[bubble_idx];
       values[bubble_idx] = values[bubble_idx+1];
       values[bubble_idx+1] = tmp;
-      bubble_sorted = false;
     }
     renderCompare(bubble_idx, bubble_idx+1);
     bubble_idx++;
     compares++;
     document.getElementById('compares').textContent = 'Compares: ' + compares.toString();
-    setTimeout(renderRects, 500);
-    setTimeout(bubble, 1000);
+    setTimeout(renderRects, 325);
+    setTimeout(bubble, 750);
   }
 }
 
 function run() {
   bubble_idx = 0;
-  bubble_sorted = true;
+  bubble_limit = 9;
   compares = 0;
-  shuffleValues();
   renderRects();
   bubble();
+}
+
+function shuffle() {
+  shuffleValues();
+  renderRects();
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0,600,700,100);
+  compares = 0;
+  document.getElementById('compares').textContent = 'Compares: ' + compares.toString();
 }
 
 renderRects();
